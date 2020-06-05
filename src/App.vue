@@ -1,17 +1,27 @@
 <template>
   <div id="app">
-    <header>
-      <span>Simple Inventory</span>
-    </header>
+    <Header />
     <main>
       <router-view></router-view>
     </main>
   </div>
 </template>
 
+<script>
+import Header from "@/components/shared/layout/Header";
+export default {
+  components: {
+    Header
+  }
+};
+</script>
 <style>
 body {
   margin: 0;
+}
+
+.red {
+  color: red;
 }
 
 #app {
@@ -28,6 +38,7 @@ main {
 }
 
 header {
+  display: flex;
   margin: 0;
   height: 56px;
   padding: 0 16px 0 24px;

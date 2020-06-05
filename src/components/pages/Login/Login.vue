@@ -1,23 +1,63 @@
 <template>
+  <!-- template is coming from w3schools how to create a register form -->
   <div>
-    <div class="imgcontainer">
-      <img src="img_avatar2.png" alt="Avatar" class="avatar" />
-    </div>
-
     <div class="container">
-      <label for="uname"><b>Username</b></label>
-      <input type="text" placeholder="Enter Username" name="uname" required />
+      <h1>Login</h1>
+      <p>Please fill in this form to login.</p>
+      <hr />
 
-      <label for="psw"><b>Password</b></label>
-      <input type="password" placeholder="Enter Password" name="psw" required />
+      <label for="email"><b>Email</b></label>
+      <input
+        type="text"
+        placeholder="Enter Email"
+        v-model="form.email"
+        required
+      />
 
-      <button>Login</button>
-      <label> <input type="checkbox" /> Remember me </label>
+      <label><b>Password</b></label>
+      <input
+        type="password"
+        placeholder="Enter Password"
+        v-model="form.password"
+        required
+      />
+
+      <hr />
+      <span class="red">{{ error }}</span>
+      <button type="submit" @click="login" class="registerbtn">
+        Login
+      </button>
     </div>
-
-    <div class="container" style="background-color:#f1f1f1">
-      <button type="button" class="cancelbtn">Cancel</button>
-      <span class="psw">Forgot <a href="#">password?</a></span>
+    <div class="container signin">
+      <p>Don't have an account? <span>Register</span>.</p>
     </div>
   </div>
 </template>
+<script>
+import firebase from "firebase";
+export default {
+  data() {
+    return {
+      form: {
+        email: "",
+        password: ""
+      },
+      error: null
+    };
+  },
+  methods: {
+    login() {
+      firebase
+        .auth()
+        .signInWithEmailAndPassword(this.form.email, this.form.password)
+        .then(data => {
+          console.log(data);
+          this.$router.replace({ name: "Home" });
+        })
+        .catch(err => {
+          this.error = err.message;
+        });
+    }
+  }
+};
+</script>
