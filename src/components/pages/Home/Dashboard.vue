@@ -1,7 +1,17 @@
 <template>
-  <div>
-    <span>Total Product: {{ productCount }}</span>
-    <span>Total Category: {{ categoryCount }}</span>
+  <div style="display:flex;">
+    <div class="counter">
+      <div class="total">
+        Total Product
+      </div>
+      <div class="count">{{ productCount }}</div>
+    </div>
+    <div class="counter">
+      <div class="total">
+        Total Category
+      </div>
+      <div class="count">{{ categoryCount }}</div>
+    </div>
   </div>
 </template>
 <script>
@@ -38,3 +48,22 @@ export default {
   }
 };
 </script>
+<style scoped>
+.counter {
+  width: 50%;
+  padding: 5px 5px;
+  margin: 10px;
+}
+.counter .count {
+  padding-top: 10px;
+  border: solid 1px silver;
+  background-color: grey;
+  padding-bottom: 10px;
+  font-size: 30px;
+  font-weight: bolder;
+}
+.counter .total {
+  font-size: 20px;
+  font-weight: bold;
+}
+</style>
