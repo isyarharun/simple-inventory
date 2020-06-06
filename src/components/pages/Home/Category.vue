@@ -62,7 +62,8 @@ export default {
       }
       firebaseDb.ref("categories/" + this.category.id).set({
         name: this.category.name,
-        description: this.category.description
+        description: this.category.description,
+        id: this.category.id
       });
       this.category.name = null;
       this.category.id = null;

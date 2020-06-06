@@ -1,0 +1,114 @@
+<template>
+  <div>
+    Product
+    <input
+      type="text"
+      placeholder="Input product name"
+      v-model="product.name"
+    />
+    <input
+      type="text"
+      placeholder="Input product description"
+      v-model="product.description"
+    />
+    <select v-model="selected">
+      <option
+        v-for="(category, name) in categories"
+        :key="name"
+        v-bind:value="category"
+      >
+        {{ category.name }}
+      </option>
+    </select>
+    <button @click="saveProduct">Save</button>
+
+    <div>
+      <table>
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Category</th>
+            <th></th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="(product, name) in products" :key="name">
+            <td>
+              {{ product.name }}
+            </td>
+            <td>{{ product.description }}</td>
+            <td>{{ product.category.name }}</td>
+            <td>
+              <button @click="editProduct(name)">Edit</button>
+            </td>
+            <td>
+              <button @click="deleteProduct(name)">Delete</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</template>
+<script>
+import { firebaseDb } from "@/config/firebase";
+import uniqid from "uniqid";
+export default {
+  data() {
+    return {
+      product: {
+        id: null,
+        name: null,
+        description: null,
+        category: null
+      },
+      selected: null,
+      products: [],
+      categories: []
+    };
+  },
+  methods: {
+    saveProduct() {
+      console.log(this.selected);
+      if (this.product.id == null) {
+        this.product.id = uniqid();
+      }
+      firebaseDb.ref("products/" + this.product.id).set({
+        id: this.product.id,
+        name: this.product.name,
+        description: this.product.description,
+        category: this.selected
+      });
+      this.product.name = null;
+      this.product.id = null;
+      this.selected = null;
+      this.product.description = null;
+    },
+    deleteProduct(id) {
+      firebaseDb.ref("products/" + id).remove();
+    },
+    editProduct(id) {
+      const ref = firebaseDb.ref("products/" + id);
+      var self = this;
+      ref.on("value", function(snapshot) {
+        self.product = snapshot.val();
+        self.product.id = id;
+      });
+    }
+  },
+  mounted() {
+    var self = this;
+    const categoriesRef = firebaseDb.ref("categories");
+    categoriesRef.on("value", function(snapshot) {
+      self.categories = snapshot.val();
+    });
+
+    const prodRef = firebaseDb.ref("products");
+    prodRef.on("value", function(snapshot) {
+      self.products = snapshot.val();
+    });
+  }
+};
+</script>
