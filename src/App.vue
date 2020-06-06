@@ -32,11 +32,6 @@ body {
   color: #2c3e50;
 }
 
-main {
-  text-align: center;
-  margin-top: 40px;
-}
-
 header {
   display: flex;
   margin: 0;
