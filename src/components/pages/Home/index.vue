@@ -1,3 +1,13 @@
 <template>
-  <div>Home</div>
+  <div>
+    <Category />
+  </div>
 </template>
+<script>
+import Category from "./Category";
+export default {
+  components: {
+    Category
+  }
+};
+</script>
