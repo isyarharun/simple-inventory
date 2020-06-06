@@ -1,13 +1,13 @@
 <template>
   <div>
-    <Product />
+    <Dashboard />
   </div>
 </template>
 <script>
-import Product from "./Product";
+import Dashboard from "./Dashboard";
 export default {
   components: {
-    Product
+    Dashboard
   }
 };
 </script>
