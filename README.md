@@ -1,29 +1,9 @@
 # simple-inventory
 
-## Project setup
-```
-yarn install
-```
+This is a project to save simple inventories using firebase
 
-### Compiles and hot-reloads for development
-```
-yarn run serve
-```
+to install all dependencies please run "yarn"
 
-### Compiles and minifies for production
-```
-yarn run build
-```
+to run the code in dev mode please run "yarn serve"
 
-### Run your tests
-```
-yarn run test
-```
-
-### Lints and fixes files
-```
-yarn run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+this is a sample to use firebase auth and firebase realtime database in a vue project
