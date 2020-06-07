@@ -12,7 +12,7 @@
         placeholder="Input product description"
         v-model="product.description"
       />
-      <select v-model="selected">
+      <select v-model="product.category">
         <option value="null" disabled>Select category</option>
         <option
           v-for="(category, name) in categories"
@@ -22,7 +22,7 @@
           {{ category.name }}
         </option>
       </select>
-      <input type="button" value="Save" @click="saveProduct" />
+      <input type="button" value="Save" @click="saveProd" />
     </div>
 
     <div>
@@ -43,6 +43,7 @@
             <td>{{ product.description }}</td>
             <td>{{ product.category.name }}</td>
             <td>
+              <button @click="newProd()">New</button>
               <button @click="editProduct(name)">Edit</button>
               <button @click="deleteProduct(name)">Delete</button>
             </td>
@@ -53,62 +54,45 @@
   </div>
 </template>
 <script>
-import { firebaseDb } from "@/config/firebase";
-import uniqid from "uniqid";
+import { mapActions, mapGetters } from "vuex";
 export default {
-  data() {
-    return {
-      product: {
-        id: null,
-        name: null,
-        description: null,
-        category: null
-      },
-      selected: null,
-      products: [],
-      categories: []
-    };
+  computed: {
+    ...mapGetters({
+      categories: "getCategories",
+      products: "getProducts",
+      product: "getProduct"
+    })
   },
   methods: {
-    saveProduct() {
-      console.log(this.selected);
-      if (this.product.id == null) {
-        this.product.id = uniqid();
-      }
-      firebaseDb.ref("products/" + this.product.id).set({
+    ...mapActions([
+      "fetchCategories",
+      "fetchProducts",
+      "saveProduct",
+      "editProduct",
+      "deleteProduct",
+      "resetProduct"
+    ]),
+    saveProd() {
+      this.saveProduct({
         id: this.product.id,
         name: this.product.name,
         description: this.product.description,
-        category: this.selected
+        category: this.product.category
       });
-      this.product.name = null;
-      this.product.id = null;
-      this.selected = null;
-      this.product.description = null;
     },
-    deleteProduct(id) {
-      firebaseDb.ref("products/" + id).remove();
+    deleteProd(id) {
+      this.deleteProduct(id);
     },
-    editProduct(id) {
-      const ref = firebaseDb.ref("products/" + id);
-      var self = this;
-      ref.on("value", function(snapshot) {
-        self.product = snapshot.val();
-        self.product.id = id;
-      });
+    editProd(id) {
+      this.editProduct(id);
+    },
+    newProd() {
+      this.resetProduct();
     }
   },
   mounted() {
-    var self = this;
-    const categoriesRef = firebaseDb.ref("categories");
-    categoriesRef.on("value", function(snapshot) {
-      self.categories = snapshot.val();
-    });
-
-    const prodRef = firebaseDb.ref("products");
-    prodRef.on("value", function(snapshot) {
-      self.products = snapshot.val();
-    });
+    this.fetchCategories();
+    this.fetchProducts();
   }
 };
 </script>

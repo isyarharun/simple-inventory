@@ -12,7 +12,7 @@
         placeholder="Input category description"
         v-model="category.description"
       />
-      <input type="button" value="Save" @click="saveCategory" />
+      <input type="button" value="Save" @click="saveCat" />
     </div>
 
     <div>
@@ -31,8 +31,9 @@
             </td>
             <td>{{ category.description }}</td>
             <td>
-              <button @click="editCategory(name)">Edit</button>
-              <button @click="deleteCategory(name)">Delete</button>
+              <button @click="newCat()">New</button>
+              <button @click="editCat(category.id)">Edit</button>
+              <button @click="deleteCat(category.id)">Delete</button>
             </td>
           </tr>
         </tbody>
@@ -41,51 +42,41 @@
   </div>
 </template>
 <script>
-import { firebaseDb } from "@/config/firebase";
-import uniqid from "uniqid";
+import { mapActions, mapGetters } from "vuex";
 export default {
-  data() {
-    return {
-      category: {
-        id: null,
-        name: null,
-        description: null
-      },
-      categories: []
-    };
+  computed: {
+    ...mapGetters({
+      categories: "getCategories",
+      category: "getCategory"
+    })
   },
   methods: {
-    saveCategory() {
-      if (this.category.id == null) {
-        this.category.id = uniqid();
-      }
-      firebaseDb.ref("categories/" + this.category.id).set({
+    ...mapActions([
+      "fetchCategories",
+      "saveCategory",
+      "editCategory",
+      "deleteCategory",
+      "resetCategory"
+    ]),
+    saveCat() {
+      this.saveCategory({
         name: this.category.name,
         description: this.category.description,
         id: this.category.id
       });
-      this.category.name = null;
-      this.category.id = null;
-      this.category.description = null;
     },
-    deleteCategory(id) {
-      firebaseDb.ref("categories/" + id).remove();
+    deleteCat(id) {
+      this.deleteCategory(id);
     },
-    editCategory(id) {
-      const ref = firebaseDb.ref("categories/" + id);
-      var self = this;
-      ref.on("value", function(snapshot) {
-        self.category = snapshot.val();
-        self.category.id = id;
-      });
+    editCat(id) {
+      this.editCategory(id);
+    },
+    newCat() {
+      this.resetCategory();
     }
   },
   mounted() {
-    const categoriesRef = firebaseDb.ref("categories");
-    var self = this;
-    categoriesRef.on("value", function(snapshot) {
-      self.categories = snapshot.val();
-    });
+    this.fetchCategories();
   }
 };
 </script>
