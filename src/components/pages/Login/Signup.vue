@@ -35,9 +35,6 @@
         Register
       </button>
     </div>
-    <div class="container signin">
-      <p>Already have an account? <span>Sign in</span>.</p>
-    </div>
   </div>
 </template>
 <script>

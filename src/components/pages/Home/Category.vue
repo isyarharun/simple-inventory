@@ -16,13 +16,12 @@
     </div>
 
     <div>
-      <table>
+      <table id="categories-table">
         <thead>
           <tr>
             <th>Name</th>
             <th>Description</th>
-            <th></th>
-            <th></th>
+            <th class="action">Action</th>
           </tr>
         </thead>
         <tbody>
@@ -33,8 +32,6 @@
             <td>{{ category.description }}</td>
             <td>
               <button @click="editCategory(name)">Edit</button>
-            </td>
-            <td>
               <button @click="deleteCategory(name)">Delete</button>
             </td>
           </tr>
@@ -124,5 +121,38 @@ div.container {
   border-radius: 5px;
   background-color: #f2f2f2;
   padding: 20px;
+}
+
+#categories-table {
+  padding-top: 10px;
+  font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+#categories-table td,
+#categories-table th {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
+#categories-table .action {
+  width: 150px;
+}
+
+#categories-table tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+#categories-table tr:hover {
+  background-color: #ddd;
+}
+
+#categories-table th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: left;
+  background-color: #4caf50;
+  color: white;
 }
 </style>

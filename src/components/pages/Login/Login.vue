@@ -21,15 +21,11 @@
         v-model="form.password"
         required
       />
-
       <hr />
       <span class="red">{{ error }}</span>
       <button type="submit" @click="login" class="registerbtn">
         Login
       </button>
-    </div>
-    <div class="container signin">
-      <p>Don't have an account? <span>Register</span>.</p>
     </div>
   </div>
 </template>

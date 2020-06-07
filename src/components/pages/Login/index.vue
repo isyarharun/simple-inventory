@@ -2,6 +2,16 @@
   <div>
     <Login v-if="islogin" />
     <Signup v-if="!islogin" />
+    <div class="container signin">
+      <p v-if="islogin">
+        Don't have an account?
+        <span @click="changeSignin(false)">Register</span>.
+      </p>
+      <p v-if="!islogin">
+        Already have an account?
+        <span @click="changeSignin(true)">Sign in</span>.
+      </p>
+    </div>
   </div>
 </template>
 <script>
@@ -16,6 +26,11 @@ export default {
     return {
       islogin: true
     };
+  },
+  methods: {
+    changeSignin(value) {
+      this.islogin = value;
+    }
   }
 };
 </script>
